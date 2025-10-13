@@ -1,0 +1,25 @@
+{
+  "name": "npm_packages",
+  "version": "1.0.0",
+  "description": "Offline packages for Damai Ticket Assistant Installer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "appium": "2.5.0",
+    "appium-uiautomator2-driver": "2.45.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}

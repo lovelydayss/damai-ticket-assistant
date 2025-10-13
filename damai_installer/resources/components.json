@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Python 3.11.6",
+    "type": "exe",
+    "file": "python-3.11.6-amd64.exe",
+    "install_cmd": "\"{path}\" /quiet PrependPath=1",
+    "check_cmd": "python --version"
+  },
+  {
+    "name": "Node.js 18.18.2 LTS",
+    "type": "msi",
+    "file": "node-v18.18.2-x64.msi",
+    "install_cmd": "msiexec /i \"{path}\" /quiet",
+    "check_cmd": "node --version"
+  },
+  {
+    "name": "Android Platform Tools",
+    "type": "zip",
+    "file": "platform-tools-latest-windows.zip",
+    "extract_dir": "C:/Android/platform-tools",
+    "check_cmd": "adb version"
+  },
+  {
+    "name": "项目依赖安装",
+    "type": "pip",
+    "install_cmd": "pip install --no-index --find-links=\"{wheels_dir}\" -r \"{requirements}\"",
+    "check_cmd": "python -c \"import appium, selenium, pydantic; print('Python依赖OK')\" 2>nul"
+  },
+  {
+    "name": "Appium Server 2.5.0 + UiAutomator2 Driver 2.45.1",
+    "type": "npm",
+    "install_cmd": "npm install -g appium@2.5.0 && npm install -g appium-doctor && appium driver install uiautomator2@2.45.1",
+    "check_cmd": "appium --version && appium-doctor --version && appium driver list --installed | findstr uiautomator2"
+  }
+]
