@@ -1,0 +1,154 @@
+{
+  "generated_at": "2025-10-19T11:09:08Z",
+  "overall_success": true,
+  "runs": [
+    {
+      "session": "device-1:http://127.0.0.1:4723",
+      "success": true,
+      "config": {
+        "server_url": "http://127.0.0.1:4723",
+        "users": [],
+        "keyword": null,
+        "city": null,
+        "date": null,
+        "price": null,
+        "price_index": 1,
+        "device_caps": {}
+      },
+      "report": {
+        "metrics": {
+          "start_time": 1760872140.0014994,
+          "start_time_iso": "2025-10-19T19:09:00.001",
+          "end_time": 1760872148.827377,
+          "end_time_iso": "2025-10-19T19:09:08.827",
+          "duration_seconds": 8.826,
+          "attempts": 1,
+          "retries": 0,
+          "success": true,
+          "final_phase": "completed",
+          "failure_reason": null,
+          "failure_code": null
+        },
+        "phase_history": [
+          "init",
+          "connecting",
+          "applying_settings",
+          "selecting_price",
+          "confirming_purchase",
+          "submitting_order",
+          "completed"
+        ],
+        "logs": [
+          {
+            "timestamp": 1760872140.0014994,
+            "timestamp_iso": "2025-10-19T19:09:00.001",
+            "level": "info",
+            "message": "第 1 次尝试",
+            "phase": "init",
+            "context": {
+              "attempt": 1,
+              "max_retries": 6,
+              "phase": "init"
+            }
+          },
+          {
+            "timestamp": 1760872140.0014994,
+            "timestamp_iso": "2025-10-19T19:09:00.001",
+            "level": "step",
+            "message": "连接 Appium server",
+            "phase": "connecting",
+            "context": {
+              "phase": "connecting"
+            }
+          },
+          {
+            "timestamp": 1760872142.0070064,
+            "timestamp_iso": "2025-10-19T19:09:02.007",
+            "level": "step",
+            "message": "开始执行抢票流程",
+            "phase": "applying_settings",
+            "context": {
+              "phase": "applying_settings"
+            }
+          },
+          {
+            "timestamp": 1760872142.0070064,
+            "timestamp_iso": "2025-10-19T19:09:02.007",
+            "level": "step",
+            "message": "尝试点击预约/购买按钮",
+            "phase": "applying_settings",
+            "context": {
+              "phase": "applying_settings"
+            }
+          },
+          {
+            "timestamp": 1760872142.098136,
+            "timestamp_iso": "2025-10-19T19:09:02.098",
+            "level": "step",
+            "message": "选择票价",
+            "phase": "selecting_price",
+            "context": {
+              "phase": "selecting_price"
+            }
+          },
+          {
+            "timestamp": 1760872142.8572032,
+            "timestamp_iso": "2025-10-19T19:09:02.857",
+            "level": "info",
+            "message": "票价选择完成",
+            "phase": "selecting_price",
+            "context": {
+              "price_index": 1,
+              "phase": "selecting_price"
+            }
+          },
+          {
+            "timestamp": 1760872142.8572032,
+            "timestamp_iso": "2025-10-19T19:09:02.857",
+            "level": "step",
+            "message": "确认购买",
+            "phase": "confirming_purchase",
+            "context": {
+              "phase": "confirming_purchase"
+            }
+          },
+          {
+            "timestamp": 1760872142.9243712,
+            "timestamp_iso": "2025-10-19T19:09:02.924",
+            "level": "step",
+            "message": "提交订单",
+            "phase": "submitting_order",
+            "context": {
+              "phase": "submitting_order"
+            }
+          },
+          {
+            "timestamp": 1760872148.827377,
+            "timestamp_iso": "2025-10-19T19:09:08.827",
+            "level": "success",
+            "message": "抢票流程执行完成",
+            "phase": "completed",
+            "context": {
+              "attempt": 1,
+              "phase": "completed"
+            }
+          },
+          {
+            "timestamp": 1760872148.827377,
+            "timestamp_iso": "2025-10-19T19:09:08.827",
+            "level": "info",
+            "message": "执行统计",
+            "phase": "completed",
+            "context": {
+              "attempts": 1,
+              "retries": 0,
+              "duration": 8.826,
+              "success": true,
+              "phase": "completed"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

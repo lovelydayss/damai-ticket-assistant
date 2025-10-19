@@ -338,30 +338,30 @@ class DamaiAppTicketRunner:
 
     def _perform_ticket_flow(self) -> bool:
         try:
-            self._ensure_not_stopped()
-            if self.config.city:
-                self._transition_to(RunnerPhase.SELECTING_CITY)
-                self._log(LogLevel.STEP, f"选择城市: {self.config.city}")
-                if not self._select_city(self.config.city):
-                    self._log(LogLevel.WARNING, f"未找到城市 {self.config.city}")
+            #self._ensure_not_stopped()
+            #if self.config.city:
+            #    self._transition_to(RunnerPhase.SELECTING_CITY)
+            #    self._log(LogLevel.STEP, f"选择城市: {self.config.city}")
+            #    if not self._select_city(self.config.city):
+            #        self._log(LogLevel.WARNING, f"未找到城市 {self.config.city}")
 
-            self._ensure_not_stopped()
-            self._transition_to(RunnerPhase.TAPPING_PURCHASE)
+            #self._ensure_not_stopped()
+            #self._transition_to(RunnerPhase.TAPPING_PURCHASE)
             self._log(LogLevel.STEP, "尝试点击预约/购买按钮")
             if not self._tap_purchase_button():
                 raise TicketRunnerError("未能找到预约/购买入口")
 
-            self._ensure_not_stopped()
+            #self._ensure_not_stopped()
             if self.config.price_index is not None:
                 self._transition_to(RunnerPhase.SELECTING_PRICE)
                 self._log(LogLevel.STEP, "选择票价")
                 self._select_price()
 
-            self._ensure_not_stopped()
-            if self.config.users and len(self.config.users) > 1:
-                self._transition_to(RunnerPhase.SELECTING_QUANTITY)
-                self._log(LogLevel.STEP, "选择数量")
-                self._select_quantity()
+            #self._ensure_not_stopped()
+            #if self.config.users and len(self.config.users) > 1:
+            #    self._transition_to(RunnerPhase.SELECTING_QUANTITY)
+            #    self._log(LogLevel.STEP, "选择数量")
+            #    self._select_quantity()
 
             self._ensure_not_stopped()
             self._transition_to(RunnerPhase.CONFIRMING_PURCHASE)
@@ -369,11 +369,11 @@ class DamaiAppTicketRunner:
             if not self._confirm_purchase():
                 raise TicketRunnerError("未能进入确认页面")
 
-            self._ensure_not_stopped()
-            if self.config.users:
-                self._transition_to(RunnerPhase.SELECTING_USERS)
-                self._log(LogLevel.STEP, "选择观演人")
-                self._select_users(self.config.users)
+            #self._ensure_not_stopped()
+            #f self.config.users:
+            #    self._transition_to(RunnerPhase.SELECTING_USERS)
+            #    self._log(LogLevel.STEP, "选择观演人")
+            #    self._select_users(self.config.users)
 
             self._ensure_not_stopped()
             self._transition_to(RunnerPhase.SUBMITTING_ORDER)
