@@ -1,0 +1,8 @@
+{
+  "server_url": "127.0.0.1:4723",
+  "need_price": "",
+  "price_index": 1,
+  "start_at_time": "",
+  "warmup-sec": "",
+  "open_log": true
+}
