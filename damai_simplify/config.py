@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from dataclasses import dataclass, field, fields as dataclass_fields
 import json
 from pathlib import Path
@@ -183,6 +184,7 @@ class DeviceOverrideModel(BaseModel):
             field_label = info.field_name or "该字段"
             raise ValueError(f"{field_label} 必须是非负数值")
         return parsed
+
 
 class AppTicketConfigModel(BaseModel):
     """Schema definition for validating app ticket configuration payloads."""
@@ -412,11 +414,11 @@ class AppTicketConfig:
     """Runtime configuration for the Appium ticket grabbing flow."""
 
     server_url: str
-    need_price: Optional[str] = None
-    price_index: Optional[int] = None
-    start_at_time: Optional[str] = None
-    warmup_sec: Optional[int] = None
-    open_log: Optional[bool] = None
+    need_price_select: Optional[str] = False
+    price_index: Optional[int] = 1
+    start_at_time: Optional[str] = datetime.now().isoformat()
+    warmup_sec: Optional[int] = 10
+    need_log: Optional[bool] = False
 
     device_caps: Dict[str, Any] = field(default_factory=dict)
     wait_timeout: float = 2.0
