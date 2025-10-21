@@ -416,7 +416,7 @@ class AppTicketConfig:
     server_url: str
     need_price_select: Optional[str] = False
     price_index: Optional[int] = 1
-    start_at_time: Optional[str] = datetime.now().isoformat()
+    start_at_time: Optional[str] = datetime.now(timezone.utc).isoformat()
     warmup_sec: Optional[int] = 10
     need_log: Optional[bool] = False
 
