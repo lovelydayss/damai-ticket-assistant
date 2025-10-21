@@ -418,8 +418,9 @@ class AppTicketConfig:
     start_at_time: Optional[str] = datetime.now(timezone.utc).isoformat()
     warmup_sec: Optional[int] = 10
     need_log: Optional[bool] = False
+    export_report:Optional[str] = "run-report.json"
 
-    device_caps: Dict[str, Any] = field(default_factory=dict)
+    device_caps: Dict[str, Any] = None
     wait_timeout: float = 2.0
     retry_delay: float = 2.0
 
@@ -447,20 +448,21 @@ class AppTicketConfig:
 
         caps: Dict[str, Any] = {
             "platformName": "Android",
-            "deviceName": self.device_caps.get("deviceName", "AndroidDevice"),
+            "deviceName": "AndroidDevice",
             "appPackage": "cn.damai",
             "appActivity": ".launcher.splash.SplashMainActivity",
             "unicodeKeyboard": True,
             "resetKeyboard": True,
             "noReset": True,
             "newCommandTimeout": 6000,
-            "automationName": self.device_caps.get("automationName", "UiAutomator2"),
+            "automationName": "UiAutomator2",
             "ignoreHiddenApiPolicyError": True,
             "disableWindowAnimation": True,
         }
 
         # 使用用户自定义的 capability 覆盖默认值
-        caps.update(self.device_caps)
+        if self.device_caps is not None:
+            caps.update(device_caps=self.device_caps)
         return caps
 
     @classmethod

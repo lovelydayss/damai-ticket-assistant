@@ -1,0 +1,84 @@
+{
+  "generated_at": "2025-10-21T17:03:46Z",
+  "overall_success": false,
+  "run": {
+    "session": "device-1:http://127.0.0.1:4723",
+    "success": false,
+    "config": {
+      "server_url": "http://127.0.0.1:4723",
+      "need_price_select": true,
+      "price_index": 1,
+      "start_at_time": "2025-10-01 20:00:00",
+      "warmup_sec": 10,
+      "need_log": true,
+      "device_caps": null,
+      "wait_timeout": 2.0,
+      "retry_delay": 2.0,
+      "price": 680,
+      "if_commit_order": true
+    },
+    "report": {
+      "metrics": {
+        "start_time": 0.0,
+        "start_time_iso": "1970-01-01T08:00:00.000",
+        "end_time": 0.0,
+        "end_time_iso": "1970-01-01T08:00:00.000",
+        "duration_seconds": 0.0,
+        "success": false,
+        "final_phase": "failed",
+        "failure_reason": "未预期的异常: HTTPConnectionPool(host='127.0.0.1', port=4723): Max retries exceeded with url: /session (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002AE3605EF30>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))",
+        "failure_code": "unexpected_error"
+      },
+      "phase_history": [
+        "init",
+        "connecting",
+        "failed"
+      ],
+      "logs": [
+        {
+          "timestamp": 1761066218.3960047,
+          "timestamp_iso": "2025-10-22T01:03:38.396",
+          "level": "step",
+          "message": "进入定时等待及预热流程",
+          "phase": "init",
+          "context": {
+            "phase": "init"
+          }
+        },
+        {
+          "timestamp": 1761066218.3960047,
+          "timestamp_iso": "2025-10-22T01:03:38.396",
+          "level": "step",
+          "message": "进入驱动配置流程",
+          "phase": "init",
+          "context": {
+            "phase": "init"
+          }
+        },
+        {
+          "timestamp": 1761066226.4418552,
+          "timestamp_iso": "2025-10-22T01:03:46.441",
+          "level": "error",
+          "message": "未预期的异常: HTTPConnectionPool(host='127.0.0.1', port=4723): Max retries exceeded with url: /session (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002AE3605EF30>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))",
+          "phase": "failed",
+          "context": {
+            "phase": "failed"
+          }
+        },
+        {
+          "timestamp": 1761066226.4418552,
+          "timestamp_iso": "2025-10-22T01:03:46.441",
+          "level": "info",
+          "message": "执行统计",
+          "phase": "failed",
+          "context": {
+            "duration": 0.0,
+            "success": false,
+            "failure_code": "unexpected_error",
+            "phase": "failed"
+          }
+        }
+      ]
+    }
+  }
+}

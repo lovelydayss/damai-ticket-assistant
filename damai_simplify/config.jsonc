@@ -3,19 +3,7 @@
   "need_price_select": true,
   "price_index": 1,
   "start_at_time": "2025-10-01 20:00:00",
-  "warmup-sec": 10,
+  "warmup_sec": 10,
   "need_log": true,
-  "device_caps" : {
-    "platformName": "Android",
-    "deviceName": "AndroidDevice",
-    "appPackage": "cn.damai",
-    "appActivity": ".launcher.splash.SplashMainActivity",
-    "unicodeKeyboard": true,
-    "resetKeyboard": true,
-    "noReset": true,
-    "newCommandTimeout": 6000,
-    "automationName":  "UiAutomator2",
-    "ignoreHiddenApiPolicyError": true,
-    "disableWindowAnimation": true
-  }
+  "export_report": "run-report.json"
 }

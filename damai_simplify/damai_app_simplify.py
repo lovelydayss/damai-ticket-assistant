@@ -98,7 +98,19 @@ def _export_report(target: Path, run: Dict[str, Any]) -> Path:
             {
                 "session": run["session"],
                 "success": run["success"],
-                "config": run["config"],
+                "config": {
+                    "server_url": run["config"].server_url,
+                    "need_price_select": run["config"].need_price_select,
+                    "price_index": run["config"].price_index,
+                    "start_at_time": run["config"].start_at_time,
+                    "warmup_sec": run["config"].warmup_sec,
+                    "need_log": run["config"].need_log,
+                    "device_caps": run["config"].device_caps,
+                    "wait_timeout": run["config"].wait_timeout,
+                    "retry_delay": run["config"].retry_delay,
+                    "price": run["config"].price,
+                    "if_commit_order": run["config"].if_commit_order,
+                },
                 "report": run["report"].to_dict() if run["report"] else None,
             }
 
@@ -136,7 +148,7 @@ def main() -> int:
 
     # 报告输出
     if config.need_log:
-        export_target = (_export_report(Path(args.export_report),
+        export_target = (_export_report(Path(config.export_report),
                            {"session": session_label, "success": success, "config": config, "report": report}))
         print(f"[SUMMARY] 汇总报告已导出: {export_target}")
 
@@ -144,4 +156,5 @@ def main() -> int:
     return 0 if success else 1
 
 if __name__ == "__main__":
+    config = AppTicketConfig.just_load("./config.jsonc")
     sys.exit(main())

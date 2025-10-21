@@ -975,7 +975,7 @@ class DamaiAppTicketRunner:
         remain = (target_utc - now_utc).total_seconds() - 1.0
 
         if remain <= 0:
-            raise RuntimeError("[error] 开抢时间已过")
+            return
 
         warmup = max(0, int(self.config.warmup_sec or 0))
         if 0 < warmup < remain:
@@ -986,8 +986,6 @@ class DamaiAppTicketRunner:
         # Warmup window (best-effort health checks)
         if warmup > 0:
             if server_url:
-                # 预热，构造驱动并检查相关状态
-
                 ok = DamaiAppTicketRunner._check_appium_status(server_url)
                 status = "OK" if ok else "FAIL"
                 print(f"[INFO] Appium /status 预热检查: {status} ({server_url})")
