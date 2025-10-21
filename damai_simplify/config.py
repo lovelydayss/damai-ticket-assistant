@@ -19,7 +19,6 @@ from pydantic import (
     field_validator,
 )
 
-
 _COMMENT_PATTERN = re.compile(r"//.*?$|/\*.*?\*/", re.DOTALL | re.MULTILINE)
 _DEFAULT_CONFIG_FILENAMES = ("config.jsonc", "config.json")
 
@@ -424,6 +423,10 @@ class AppTicketConfig:
     wait_timeout: float = 2.0
     retry_delay: float = 2.0
 
+    price:Optional[int] = 680
+    if_commit_order: Optional[bool] = True
+
+
     def __post_init__(self) -> None:
         self.server_url = _normalise_server_url(self.server_url)
 
@@ -540,6 +543,13 @@ class AppTicketConfig:
             message = f"{file_path.name} 配置校验失败"
             raise ConfigValidationError(exc.errors, message=message) from exc
         return configs
+
+    @classmethod
+    def just_load(cls, path: Optional[Union[Path, str]] = None) -> "AppTicketConfig":
+        file_path = _resolve_config_path(path)
+        raw_content = file_path.read_text(encoding="utf-8")
+
+        return json.loads(_strip_jsonc(raw_content), object_hook=lambda d: AppTicketConfig(**d))
 
 
 def _resolve_config_path(path: Optional[Union[Path, str]]) -> Path:

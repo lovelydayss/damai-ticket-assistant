@@ -1,20 +1,13 @@
 import argparse
 import json
-import time
-import subprocess
 from datetime import datetime, timezone
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from urllib.request import Request, urlopen
-from urllib.error import URLError
 
 from damai_simplify import (
     AppTicketConfig,
-    ConfigValidationError,
     DamaiAppTicketRunner,
-    FailureReason,
-    LogLevel,
 )
 
 # 解析 python 参数
@@ -118,7 +111,7 @@ def main() -> int:
     # 配置文件读取
     args = _parse_args()
     try:
-        config = AppTicketConfig.load(args.config)
+        config = AppTicketConfig.just_load(args.config)
     except Exception as exc:  # noqa: BLE001
         print(f"[ERROR] 配置加载失败: {exc}")
         return 2
@@ -131,7 +124,6 @@ def main() -> int:
         print(f"[INFO] 开始执行 {session_label}")
 
         # 主流程
-        # 对于抢票来说，重试没有意义
         runner = DamaiAppTicketRunner(config=config, logger=logger)
         success = runner.run()
         report = runner.get_last_report()
