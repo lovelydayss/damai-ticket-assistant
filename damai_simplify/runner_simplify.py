@@ -216,9 +216,6 @@ class DamaiAppTicketRunner:
             self._log(LogLevel.STEP, "进入定时等待及预热流程")
             self._wait_until_utc()
 
-            self._transition_to(RunnerPhase.APPLYING_SETTINGS)
-            self._apply_driver_settings()
-
             self._log(LogLevel.STEP, "进入实际抢票流程")
             self._run_start_time = time.time()
             success = self._perform_ticket_flow()
@@ -301,7 +298,6 @@ class DamaiAppTicketRunner:
 
     def _perform_ticket_flow(self) -> bool:
         try:
-
             #self._ensure_not_stopped()
             self._transition_to(RunnerPhase.TAPPING_PURCHASE)
             self._log(LogLevel.STEP, "尝试点击预约/购买按钮")
@@ -320,7 +316,7 @@ class DamaiAppTicketRunner:
             #    self._log(LogLevel.STEP, "选择数量")
             #    self._select_quantity()
 
-            self._ensure_not_stopped()
+            #self._ensure_not_stopped()
             self._transition_to(RunnerPhase.CONFIRMING_PURCHASE)
             self._log(LogLevel.STEP, "确认购买")
             if not self._confirm_purchase():
@@ -332,7 +328,7 @@ class DamaiAppTicketRunner:
             #    self._log(LogLevel.STEP, "选择观演人")
             #    self._select_users(self.config.users)
 
-            self._ensure_not_stopped()
+            #self._ensure_not_stopped()
             self._transition_to(RunnerPhase.SUBMITTING_ORDER)
             self._log(LogLevel.STEP, "提交订单")
             self._submit_order()
@@ -365,7 +361,7 @@ class DamaiAppTicketRunner:
         for by, value in selectors:
             self._ensure_not_stopped()
             try:
-                element = WebDriverWait(driver, timeout, 0.1).until(
+                element = WebDriverWait(driver, timeout, 0.05).until(
                     EC.presence_of_element_located((by, value))
                 )
                 rect = element.rect
@@ -385,7 +381,7 @@ class DamaiAppTicketRunner:
     def _ultra_fast_click(self, by: Any, value: Any, timeout: float = 3) -> bool:
         driver = self._ensure_driver()
         try:
-            element = WebDriverWait(driver, timeout, 0.1).until(
+            element = WebDriverWait(driver, timeout, 0.05).until(
                 EC.presence_of_element_located((by, value))
             )
             rect = element.rect
@@ -409,7 +405,7 @@ class DamaiAppTicketRunner:
         for by, value in selectors:
             self._ensure_not_stopped()
             try:
-                element = WebDriverWait(driver, timeout, 0.1).until(
+                element = WebDriverWait(driver, timeout, 0.05).until(
                     EC.presence_of_element_located((by, value))
                 )
                 rect = element.rect
@@ -458,10 +454,6 @@ class DamaiAppTicketRunner:
             (By.XPATH, '//*[contains(@text,"预约") or contains(@text,"购买")]'),
         ]
         return self._smart_wait_and_click(selectors[0], selectors[1:])
-
-    def _tap_purchase_button(self) -> bool:
-        self._ensure_driver()
-        return self._ultra_fast_click(By.ID, "cn.damai:id/trade_project_detail_purchase_status_bar_container_fl", 3)
 
     def _select_price(self) -> None:
         """Robust ticket price selection with multiple fallbacks and auto-scroll.
@@ -630,10 +622,6 @@ class DamaiAppTicketRunner:
         if self._ultra_fast_click(By.ID, "btn_buy_view", 1):
             return True
         return self._ultra_fast_click(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().textMatches(".*确定.*|.*购买.*")', 1)
-
-    def _confirm_purchase(self) -> bool:
-        self._ensure_driver()
-        return self._ultra_fast_click(By.ID, "btn_buy_view", 10)
 
     def _select_users(self, users: Sequence[str]) -> None:
         """Robust viewer selection on the confirm page.
@@ -821,10 +809,17 @@ class DamaiAppTicketRunner:
                 ],
             )
 
-    def _submit_order(self) -> bool:
-        self._ensure_driver()
-        return self._ultra_fast_click(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("立即提交")', 3)
+    # ------------------------------------------------------------------
+    # Flow steps simplify
+    # ------------------------------------------------------------------
+    def _tap_purchase_button(self) -> bool:
+        return self._ultra_fast_click(By.ID, "cn.damai:id/trade_project_detail_purchase_status_bar_container_fl", 2)
 
+    def _confirm_purchase(self) -> bool:
+        return self._ultra_fast_click(By.ID, "btn_buy_view", 2)
+
+    def _submit_order(self) -> bool:
+        return self._ultra_fast_click(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("立即提交")', 2)
 
     # ------------------------------------------------------------------
     # Utility helpers
@@ -993,6 +988,9 @@ class DamaiAppTicketRunner:
         self._transition_to(RunnerPhase.CONNECTING)
         self._driver = self._create_driver()
         print(f"[INFO] 驱动配置完成")
+
+        self._transition_to(RunnerPhase.APPLYING_SETTINGS)
+        self._apply_driver_settings()
 
         # Final precise wait to the target moment
         while True:
