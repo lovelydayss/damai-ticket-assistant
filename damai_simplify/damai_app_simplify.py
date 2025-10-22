@@ -156,5 +156,4 @@ def main() -> int:
     return 0 if success else 1
 
 if __name__ == "__main__":
-    config = AppTicketConfig.just_load("./config.jsonc")
     sys.exit(main())

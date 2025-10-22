@@ -212,13 +212,8 @@ class DamaiAppTicketRunner:
         failure_message: Optional[str] = None
 
         try:
-            # 提前 [1s, 2s) 进入驱动配置
             self._log(LogLevel.STEP, "进入定时等待及预热流程")
             self._wait_until_utc()
-
-            self._log(LogLevel.STEP, "进入驱动配置流程")
-            self._transition_to(RunnerPhase.CONNECTING)
-            self._driver = self._create_driver()
 
             self._transition_to(RunnerPhase.APPLYING_SETTINGS)
             self._apply_driver_settings()
@@ -629,11 +624,15 @@ class DamaiAppTicketRunner:
         except Exception as exc:  # noqa: BLE001
             self._log(LogLevel.WARNING, f"人数选择异常: {exc}")
 
-    def _confirm_purchase(self) -> bool:
+    def _confirm_purchase_smart(self) -> bool:
         self._ensure_driver()
         if self._ultra_fast_click(By.ID, "btn_buy_view", 1):
             return True
         return self._ultra_fast_click(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().textMatches(".*确定.*|.*购买.*")', 1)
+
+    def _confirm_purchase(self) -> bool:
+        self._ensure_driver()
+        return self._ultra_fast_click(By.ID, "btn_buy_view", 1)
 
     def _select_users(self, users: Sequence[str]) -> None:
         """Robust viewer selection on the confirm page.
@@ -972,10 +971,7 @@ class DamaiAppTicketRunner:
 
         target_utc = DamaiAppTicketRunner._parse_start_at_text(self.config.start_at_time)
         now_utc = datetime.now(timezone.utc)
-        remain = (target_utc - now_utc).total_seconds() - 1.0
-
-        if remain <= 0:
-            return
+        remain = (target_utc - now_utc).total_seconds()
 
         warmup = max(0, int(self.config.warmup_sec or 0))
         if 0 < warmup < remain:
@@ -983,24 +979,32 @@ class DamaiAppTicketRunner:
             print(f"[INFO] 距离开抢还有 {remain:.2f}s，先等待 {sleep_sec:.2f}s 后进入预热检查。")
             time.sleep(sleep_sec)
 
-        # Warmup window (best-effort health checks)
-        if warmup > 0:
-            if server_url:
-                ok = DamaiAppTicketRunner._check_appium_status(server_url)
-                status = "OK" if ok else "FAIL"
-                print(f"[INFO] Appium /status 预热检查: {status} ({server_url})")
-            adb_ok = DamaiAppTicketRunner._adb_ready()
-            print(f"[INFO] adb 设备状态: {'OK' if adb_ok else 'FAIL'}")
+        # 预热检查
+        if server_url:
+            ok = DamaiAppTicketRunner._check_appium_status(server_url)
+            status = "OK" if ok else "FAIL"
+            print(f"[INFO] Appium status 预热检查: {status} ({server_url})")
+        adb_ok = DamaiAppTicketRunner._adb_ready()
+        print(f"[INFO] adb 设备状态: {'OK' if adb_ok else 'FAIL'}")
+
+        # 驱动处理
+        self._log(LogLevel.STEP, "进入驱动配置流程")
+        self._transition_to(RunnerPhase.CONNECTING)
+        self._driver = self._create_driver()
+        print(f"[INFO] 驱动配置完成")
 
         # Final precise wait to the target moment
         while True:
             now_utc = datetime.now(timezone.utc)
-            remain = (target_utc - now_utc).total_seconds() - 1.0
+            remain = (target_utc - now_utc).total_seconds()
             if remain <= 0:
                 break
             if remain > 1.0:
                 # Sleep most of the remaining time, keep 1s for fine-grained loop
                 time.sleep(remain - 1.0)
+            else:
+                # Sub-second busy wait
+                time.sleep(0.001)
 
         print("[INFO] 到点，开始执行抢票流程。")
 

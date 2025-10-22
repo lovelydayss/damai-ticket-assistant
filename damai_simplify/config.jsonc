@@ -1,8 +1,8 @@
 {
   "server_url": "127.0.0.1:4723",
-  "need_price_select": true,
-  "price_index": 1,
-  "start_at_time": "2025-10-01 20:00:00",
+  "need_price_select": false,
+  "price_index": 2,
+  "start_at_time": "2025-10-11 20:30:00",
   "warmup_sec": 10,
   "need_log": true,
   "export_report": "run-report.json"
