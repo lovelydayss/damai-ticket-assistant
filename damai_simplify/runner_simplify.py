@@ -212,6 +212,7 @@ class DamaiAppTicketRunner:
         failure_message: Optional[str] = None
 
         try:
+
             self._log(LogLevel.STEP, "进入定时等待及预热流程")
             self._wait_until_utc()
 
@@ -632,7 +633,7 @@ class DamaiAppTicketRunner:
 
     def _confirm_purchase(self) -> bool:
         self._ensure_driver()
-        return self._ultra_fast_click(By.ID, "btn_buy_view", 1)
+        return self._ultra_fast_click(By.ID, "btn_buy_view", 10)
 
     def _select_users(self, users: Sequence[str]) -> None:
         """Robust viewer selection on the confirm page.
